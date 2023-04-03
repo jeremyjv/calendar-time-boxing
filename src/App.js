@@ -73,30 +73,15 @@ export default function App() {
 	//functionality to create a calendar event given a task 
 	function createEvent() {
 		var event = {
-			'summary': 'shadowboxing ',
-			'location': '800 Howard St., San Francisco, CA 94103',
-			'description': 'shadowboxing',
-			'start': {
-			  'date': '2023-04-01',
+			"summary": "shadowboxing",
+			"description": "shadowboxing",
+			"start": {
+				"date": "2023-04-02",
 	
 			},
-			'end': {
-			  'date': '2023-04-01',
+			"end": {
+				"date": "2023-04-02",
 	
-			},
-			'recurrence': [
-			  'RRULE:FREQ=DAILY;COUNT=2'
-			],
-			'attendees': [
-			  {'email': 'lpage@example.com'},
-			  {'email': 'sbrin@example.com'}
-			],
-			'reminders': {
-			  'useDefault': false,
-			  'overrides': [
-				{'method': 'email', 'minutes': 24 * 60},
-				{'method': 'popup', 'minutes': 10}
-			  ]
 			}
 		}
 		return event;
@@ -104,7 +89,7 @@ export default function App() {
 
 	function addEvents() {
 		
-		gapi.load('client:auth2', () => {
+		gapi.load('auth2', () => {
 			console.log('loaded client')
 	  
 			gapi.client.init({
@@ -112,38 +97,26 @@ export default function App() {
 			  clientId: CLIENT_ID,
 			  discoveryDocs: DISCOVERY_DOC,
 			  scope: SCOPES,
+			  pluginName: 'todo-list'
 			})
 	  
 			gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 	  
-			gapi.auth2.getAuthInstance().signIn()
+			const googleAuth = gapi.auth2.getAuthInstance(); //problems here
+			
+			const googleUser = googleAuth.signIn()     //problems here
 			.then(() => {
-			  
+				
 				var event = {
-					'summary': 'shadowboxing ',
-					'location': '800 Howard St., San Francisco, CA 94103',
-					'description': 'shadowboxing',
-					'start': {
-						'date': '2023-04-01',
+					"summary": "shadowboxing",
+					"description": "shadowboxing",
+					"start": {
+						"date": "2023-04-02",
 			
 					},
-					'end': {
-						'date': '2023-04-01',
+					"end": {
+						"date": "2023-04-02",
 			
-					},
-					'recurrence': [
-						'RRULE:FREQ=DAILY;COUNT=2'
-					],
-					'attendees': [
-						{'email': 'lpage@example.com'},
-						{'email': 'sbrin@example.com'}
-					],
-					'reminders': {
-						'useDefault': false,
-						'overrides': [
-						{'method': 'email', 'minutes': 24 * 60},
-						{'method': 'popup', 'minutes': 10}
-						]
 					}
 				}
 	  
@@ -160,6 +133,7 @@ export default function App() {
 	  
 		
 			})
+			
 		  })
 		
 	}
