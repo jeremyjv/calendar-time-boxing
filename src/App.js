@@ -68,19 +68,29 @@ export default function App() {
 	const taskSummary = useRef('');
 
 	
-	
+	function getDate() {
+
+	}
 
 	//functionality to create a calendar event given a task 
-	function createEvent() {
+	function createEvent(task, time) {
+		
+		var dateObj = new Date();
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var year = dateObj.getUTCFullYear();
+
+		const newdate = year + "-" + month + "-" + day;
+
 		var event = {
-			"summary": "shadowboxing",
-			"description": "shadowboxing",
+			"summary": task.title,
+			"description": task.summary,
 			"start": {
-				"date": "2023-04-02",
+				"dateTime": newdate + "T07:00:00-08:00",
 	
 			},
 			"end": {
-				"date": "2023-04-02",
+				"dateTime": newdate + "T07:00:00-08:00",
 	
 			}
 		}
@@ -107,28 +117,17 @@ export default function App() {
 			const googleUser = googleAuth.signIn()     //problems here
 			.then(() => {
 				
-				var event = {
-					"summary": "shadowboxing",
-					"description": "shadowboxing",
-					"start": {
-						"date": "2023-04-02",
+				for (const task of [...tasks]) {
+					var request = gapi.client.calendar.events.insert({
+						'calendarId': 'primary',
+						'resource': createEvent(task),
+					})
 			
-					},
-					"end": {
-						"date": "2023-04-02",
-			
-					}
+					request.execute(event => {
+						console.log(event)
+						window.open(event.htmlLink)
+					})
 				}
-	  
-			  var request = gapi.client.calendar.events.insert({
-				'calendarId': 'primary',
-				'resource': event,
-			  })
-	  
-			  request.execute(event => {
-				console.log(event)
-				window.open(event.htmlLink)
-			  })
 			  
 	  
 		
